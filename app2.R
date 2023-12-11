@@ -41,9 +41,9 @@ server = function(input, output) {
     
     
     # Define countries to color differently
-    highlight_countries <- reactive({c(input$country1, input$country2)})
+    highlight_countries <- c(input$country1, input$country2)
     
-    distance_value=reactive({ df[df$country1==highlight_countries()[1] & df$country2==highlight_countries[2](),5]})
+    distance_value= df[df$country1==highlight_countries[1] & df$country2==highlight_countries[2],5]
     
     
     ggplot() + 
@@ -55,7 +55,7 @@ server = function(input, output) {
       # of the border in the map.
       geom_map( 
         data = world_coordinates, map = world_coordinates, 
-        aes(long, lat, map_id = region, fill = ifelse(region %in% highlight_countries(), "yellow", "darkgreen")), 
+        aes(long, lat, map_id = region, fill = ifelse(region %in% highlight_countries, "yellow", "darkgreen")), 
         color = "white", size = 0.2 
       ) +
       
@@ -64,7 +64,7 @@ server = function(input, output) {
       
       # Add text to the plot
       annotate("text", x = 250, y = 102, hjust = 1, vjust = 0,
-               label = paste("Distance is"),   #, distance_value()),
+               label = paste("Distance is",distance_value),   #, distance_value()),
                color = "black", size = 5) +
       
       # Adjust legend position to the bottom
